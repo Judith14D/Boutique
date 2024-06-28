@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingHorizontal="10dp"
+    android:paddingVertical="10dp"
+    tools:context=".RegistroActivity">
+
+    <TextView
+        android:id="@+id/tvBienvenido"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="162dp"
+        android:text="Regístrate"
+        android:textColor="#777AF5"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/icFacebook"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/tvBienvenida2"
+        android:layout_width="341dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="26dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="26dp"
+        android:layout_marginBottom="611dp"
+        android:text="Por favor Inicia sesión o Regístrate para  seguir usando nuestra app."
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvBienvenido"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="343dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="140dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="328dp"
+        android:text="Ingresa a traves de los siguientes métodos"
+        android:textColor="#777AF5"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/checkBoxPolitica"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.97" />
+
+    <ImageView
+        android:id="@+id/icFacebook"
+        android:layout_width="32dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="129dp"
+        android:layout_marginTop="72dp"
+        android:layout_marginEnd="78dp"
+        android:layout_marginBottom="67dp"
+        app:layout_constraintBottom_toTopOf="@+id/tvIniciaSesion"
+        app:layout_constraintEnd_toStartOf="@+id/icGoogle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textView3"
+        app:srcCompat="@drawable/ic_facebook" />
+
+    <ImageView
+        android:id="@+id/icGoogle"
+        android:layout_width="32dp"
+        android:layout_height="38dp"
+        android:layout_marginTop="72dp"
+        android:layout_marginEnd="140dp"
+        android:layout_marginBottom="475dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/icFacebook"
+        app:layout_constraintTop_toTopOf="@+id/textView3"
+        app:layout_constraintVertical_bias="0.285"
+        app:srcCompat="@drawable/ic_google" />
+
+    <TextView
+        android:id="@+id/tvIniciaSesion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="47dp"
+        android:text="O inicia sesión con tu correo"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/etCorreo"
+        app:layout_constraintEnd_toEndOf="@+id/etContrasena"
+        app:layout_constraintStart_toStartOf="@+id/etContrasena"
+        app:layout_constraintTop_toBottomOf="@+id/icFacebook" />
+
+    <EditText
+        android:id="@+id/etCorreo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="28dp"
+        android:ems="10"
+        android:hint="Correo"
+        android:inputType="text"
+        android:shadowColor="#958B8B"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/etContrasena"
+        app:layout_constraintStart_toStartOf="@+id/etContrasena"
+        app:layout_constraintTop_toBottomOf="@+id/tvIniciaSesion" />
+
+    <EditText
+        android:id="@+id/etContrasena"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="227dp"
+        android:ems="10"
+        android:hint="Contraseña"
+        android:inputType="textPassword"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etCorreo" />
+
+    <CheckBox
+        android:id="@+id/checkBoxPolitica"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="166dp"
+        android:text="Estoy de acuerdo con la politic ade privacidad"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+    <Button
+        android:id="@+id/btnRegistrar"
+        android:layout_width="241dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="49dp"
+        android:layout_marginEnd="49dp"
+        android:layout_marginBottom="32dp"
+        android:background="#777AF5"
+        android:backgroundTint="#777AF5"
+        android:onClick="sendRegistro"
+        android:text="Registrar"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/textView3"
+        app:layout_constraintStart_toStartOf="@+id/textView3"
+        app:layout_constraintTop_toBottomOf="@+id/checkBoxPolitica" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
