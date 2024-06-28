@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:paddingHorizontal="10dp"
     android:paddingVertical="10dp"
-    tools:context=".RegistroActivity">
+    tools:context=".InicioActivity">
 
     <TextView
         android:id="@+id/tvBienvenido"
@@ -16,7 +16,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
         android:layout_marginBottom="162dp"
-        android:text="Regístrate"
+        android:text="Inicia sesión"
         android:textColor="#777AF5"
         android:textSize="25sp"
         android:textStyle="bold"
