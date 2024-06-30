@@ -1,5 +1,5 @@
 package com.cibertec.boutique
-
+import android.content.Intent
 import android.os.Bundle
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -7,10 +7,6 @@ import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
-import androidx.navigation.NavController
-import androidx.navigation.Navigation
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.NavigationUI
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cibertec.boutique.adaptador.ProductoAdapter
@@ -21,30 +17,15 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.firebase.Firebase
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.auth
-
 class UsuarioActivity : AppCompatActivity() {
 
-    //Firebase
-    private lateinit var mGoogleSignInClient: GoogleSignInClient
-    private lateinit var mAuth: FirebaseAuth
-
-    //Variables
     private lateinit var recyclerViewProducts: RecyclerView
     private lateinit var productoAdapter: ProductoAdapter
     private var productList: List<Producto> = emptyList()
-//    private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_usuario)
-
-
 
         // Configurar el RecyclerView
         recyclerViewProducts = findViewById(R.id.recyclerViewProducts)
@@ -64,7 +45,6 @@ class UsuarioActivity : AppCompatActivity() {
                 return true
             }
         })
-
 
         // Configurar el Spinner de tipos de producto
         val spinnerProductType: Spinner = findViewById(R.id.spFiltros)
@@ -88,11 +68,31 @@ class UsuarioActivity : AppCompatActivity() {
             }
         }
 
+        // Configurar BottomNavigationView
+        val bottomNavigationView: BottomNavigationView = findViewById(R.id.bottomNavigationView)
+        bottomNavigationView.setOnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.navigation_inicio -> {
+                    // Ya estamos en esta actividad
+                    true
+                }
+                R.id.navigation_contacto -> {
+                    val intent = Intent(this, ContactoActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
+                R.id.navigation_perfil -> {
+                    val intent = Intent(this, PerfilActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
+                else -> false
+            }
+        }
 
-
+        // Cargar todos los productos al iniciar la actividad
         fetchAllProducts()
     }
-
 
     private fun fetchAllProducts() {
         RetrofitInstancia.api.getProducts().enqueue(object : Callback<List<Producto>> {
@@ -113,6 +113,7 @@ class UsuarioActivity : AppCompatActivity() {
             }
         })
     }
+
 
     private fun fetchProductsByType(type: String) {
         RetrofitInstancia.api.getProductsByType(type).enqueue(object : Callback<List<Producto>> {
@@ -150,5 +151,4 @@ class UsuarioActivity : AppCompatActivity() {
     private fun showToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
-
 }

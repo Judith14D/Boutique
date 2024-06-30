@@ -20,7 +20,7 @@ class ProductoAdapter(private var productList: List<Producto>) : RecyclerView.Ad
     inner class ProductViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val imageViewProducto: ImageView = itemView.findViewById(R.id.imageViewProducto)
         private val imageViewCorazon: ImageView = itemView.findViewById(R.id.imageViewFavorite)
-        private var isFavorito: Boolean = false // Puedes usar un campo en tu modelo para esto
+        private var isFavorito: Boolean = false
 
         init {
             itemView.setOnClickListener {
@@ -30,7 +30,7 @@ class ProductoAdapter(private var productList: List<Producto>) : RecyclerView.Ad
                     putExtra("nombre", filteredList[position].name)
                     putExtra("descripcion", filteredList[position].description)
                     putExtra("categoria", filteredList[position].product_type)
-                    putExtra("precio", filteredList[position].price ?: 0.0) // Default a 0.0 si es null
+                    putExtra("precio", filteredList[position].price ?: 0.0)
                     // Agrega más datos según sea necesario
                 }
                 itemView.context.startActivity(intent)
@@ -42,12 +42,11 @@ class ProductoAdapter(private var productList: List<Producto>) : RecyclerView.Ad
                 imageViewCorazon.startAnimation(animacion)
 
                 if (isFavorito) {
-                    imageViewCorazon.setImageResource(R.drawable.corazon_rojo) // Cambia a la imagen roja
+                    imageViewCorazon.setImageResource(R.drawable.corazon_rojo)
                 } else {
-                    imageViewCorazon.setImageResource(R.drawable.corazon_normal) // Cambia a la imagen normal
+                    imageViewCorazon.setImageResource(R.drawable.corazon_normal)
                 }
 
-                // Aquí puedes realizar otras acciones como guardar el estado en tu modelo de datos
             }
         }
     }
@@ -69,12 +68,10 @@ class ProductoAdapter(private var productList: List<Producto>) : RecyclerView.Ad
                 e.printStackTrace()
             }
 
-            // Implementa aquí el comportamiento del botón de favorito si es necesario
         } else {
             // Manejar caso donde la lista está vacía, por ejemplo:
             holder.itemView.findViewById<TextView>(R.id.tvNombreProducto).text = "No hay productos"
             holder.itemView.findViewById<TextView>(R.id.tvDescripcion).text = ""
-            // Puedes ocultar o deshabilitar vistas aquí según sea necesario
         }
     }
 

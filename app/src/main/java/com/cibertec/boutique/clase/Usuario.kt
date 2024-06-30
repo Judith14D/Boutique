@@ -9,6 +9,7 @@ class Usuario(
     val correo:String,
     val edad:Int,
     val fechaNac:Date,
-    val sexo:String
+    val sexo:String,
+    val contrasena:String
 ) {
 }
