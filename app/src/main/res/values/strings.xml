@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">Boutique</string>
+    <string name="default_web_client_id">
+        870382443561-ngd0qs2h3b7er7pstungujs8s9p11u3b.apps.googleusercontent.com
+    </string>
+    <string-array name="opcionesFiltro">
+        <item>Lapis Labial</item>
+        <item>Delineador</item>
+        <item>Brochas</item>
+    </string-array>
+    <string name="title_activity_producto">ProductoActivity</string>
+    <string name="title_home">Inicio</string>
+    <string name="title_dashboard">Contacto</string>
+    <string name="title_notifications">Perfil</string>
 </resources>

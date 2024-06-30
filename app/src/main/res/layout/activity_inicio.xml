@@ -80,6 +80,7 @@
         android:layout_marginTop="72dp"
         android:layout_marginEnd="140dp"
         android:layout_marginBottom="475dp"
+        android:onClick="sendInicioGoogle"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/icFacebook"
@@ -149,12 +150,24 @@
         android:layout_marginBottom="32dp"
         android:background="#777AF5"
         android:backgroundTint="#777AF5"
-        android:onClick="sendRegistro"
-        android:text="Registrar"
+        android:onClick="sendInicioSesion"
+        android:text="Inicar sesión"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/textView3"
         app:layout_constraintStart_toStartOf="@+id/textView3"
         app:layout_constraintTop_toBottomOf="@+id/checkBoxPolitica" />
+
+    <TextView
+        android:id="@+id/textViewNoCuenta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:text="Todavía no tienes una cuenta? Regístrate"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnRegistrar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

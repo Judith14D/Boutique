@@ -1,10 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UsuarioActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#FBDCC4">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:id="@+id/tvTitulo"
+        android:padding="16dp"
+        android:layout_marginTop="15dp"
+        android:text="Productos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textColor="@android:color/white"
+        android:layout_centerHorizontal="true"
+        android:textSize="30sp" />
+
+    <LinearLayout
+        android:id="@+id/containerControls"
+        android:layout_width="match_parent"
+        android:layout_height="787dp"
+
+        android:layout_marginTop="100dp"
+        android:background="@drawable/redondeado"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/searchView"
+                android:layout_width="197dp"
+                android:layout_height="35dp"
+                android:iconifiedByDefault="false"
+                android:queryHint="Buscar" />
+
+            <Spinner
+                android:id="@+id/spFiltros"
+                android:layout_width="176dp"
+                android:layout_height="44dp"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="5dp"
+                android:autofillHints="0"
+                android:entries="@array/opcionesFiltro" />
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewProducts"
+            android:layout_width="384dp"
+            android:layout_height="621dp"
+            android:layout_marginTop="10dp" />
+
+    </LinearLayout>
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="?android:attr/windowBackground"
+        app:itemIconTint="@android:color/white"
+        app:itemTextColor="@color/black"
+        app:menu="@menu/navegacion_menu" />
+</RelativeLayout>
