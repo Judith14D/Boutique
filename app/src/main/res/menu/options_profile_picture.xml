@@ -1,4 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-  
+    <item
+        android:id="@+id/action_choose_from_gallery"
+        android:title="Cargar foto" />
+    <item
+        android:id="@+id/action_take_photo"
+        android:title="Tomar foto" />
 </menu>

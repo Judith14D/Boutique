@@ -5,8 +5,12 @@ import android.content.Intent
 import android.media.Image
 import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
+import android.view.View
 import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageView
+import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -28,6 +32,11 @@ class PerfilActivity : AppCompatActivity() {
     private lateinit var mAuth: FirebaseAuth
 
     private lateinit var imageView: ImageView
+    private lateinit var editTextCorreo: EditText
+    private lateinit var editTextNombres: EditText
+    private lateinit var editTextApellidos:EditText
+    private lateinit var editTextContrasena: EditText
+
 
     companion object {
         private const val IMAGE_REQUEST = 1
@@ -46,9 +55,15 @@ class PerfilActivity : AppCompatActivity() {
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
 
+        //INICIALIZACION DE VARIABLES
         imageView = findViewById(R.id.imageView)
+        editTextNombres = findViewById(R.id.editTextNombres)
+        editTextApellidos = findViewById(R.id.editTextApellidos)
+        editTextContrasena = findViewById(R.id.editTextContrasena)
+        editTextCorreo = findViewById(R.id.editTextCorreo)
         val textViewUser = findViewById<TextView>(R.id.tvBienvenidaUsuario)
-        val btnChangeImage = findViewById<Button>(R.id.btnChangeProfilePicture)
+        val btnChangeImage = findViewById<ImageView>(R.id.btnChangeProfilePicture)
+
 
         val auth = Firebase.auth
         val user = auth.currentUser
@@ -56,7 +71,18 @@ class PerfilActivity : AppCompatActivity() {
         if (user != null) {
             val userName = user.displayName
             val userPhoto = user.photoUrl
+            val userEmail = user.email
+
+            // Separar nombre y apellidos
+            val names = userName?.split(" ")
+            val firstName = names?.get(0) ?: ""
+            val lastName = if (names?.size ?: 0 > 1) names?.subList(1, names.size)?.joinToString(" ") else ""
+
+
             textViewUser.text = "Hola, " + userName
+            editTextCorreo.setText(userEmail)
+            editTextNombres.setText(firstName)
+            editTextApellidos.setText(lastName)
             Glide.with(this)
                 .load(userPhoto)
                 .into(imageView)
@@ -65,10 +91,7 @@ class PerfilActivity : AppCompatActivity() {
         }
 
         btnChangeImage.setOnClickListener {
-            val intent = Intent()
-            intent.type = "image/*"
-            intent.action = Intent.ACTION_GET_CONTENT
-            startActivityForResult(Intent.createChooser(intent, "Selecciona una imagen"), IMAGE_REQUEST)
+            showPopupMenu(it)
         }
 
         /*val sign_out_button = findViewById<Button>(R.id.logout_button)
@@ -76,6 +99,35 @@ class PerfilActivity : AppCompatActivity() {
             signOutAndStartSignInActivity()
         }*/
 
+    } //FIN ONCREATE
+
+    //POP UP DE OPCIONES DE FOTO
+    private fun showPopupMenu(view: View) {
+        val popupMenu = PopupMenu(this, view)
+        popupMenu.inflate(R.menu.options_profile_picture)
+
+        popupMenu.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.action_choose_from_gallery -> {
+                    val intent = Intent()
+                    intent.type = "image/*"
+                    intent.action = Intent.ACTION_GET_CONTENT
+                    startActivityForResult(Intent.createChooser(intent, "Selecciona una imagen"), IMAGE_REQUEST)
+                    true
+                }
+                R.id.action_take_photo -> {
+                    Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+                        takePictureIntent.resolveActivity(packageManager)?.also {
+                            startActivityForResult(takePictureIntent, IMAGE_REQUEST)
+                        }
+                    }
+                    true
+                }
+                else -> false
+            }
+        }
+
+        popupMenu.show()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -87,6 +139,7 @@ class PerfilActivity : AppCompatActivity() {
         }
     }
 
+    //ACTUALIZAR IMAGEN DE FIREBASE
     private fun uploadImageToFirebase(uri: Uri?) {
         if (uri != null) {
             val storageReference = FirebaseStorage.getInstance().reference
@@ -103,6 +156,7 @@ class PerfilActivity : AppCompatActivity() {
         }
     }
 
+    //ACTUALIZAR IMAGEN
     private fun updateProfileImage(downloadUri: Uri) {
         val user = Firebase.auth.currentUser
 
