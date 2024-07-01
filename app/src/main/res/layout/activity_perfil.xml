@@ -1,11 +1,161 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#FBDCC4">
 
-    <TextView
+    <ImageView
+        android:id="@+id/imageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Perfil Activity"
-        android:layout_centerInParent="true"/>
+        android:layout_above="@id/bottomNavigationView"
+        android:layout_below="@+id/tvBienvenidaUsuario"
+        android:layout_centerHorizontal="true"
+        android:layout_marginHorizontal="150dp"
+        android:layout_marginTop="31dp"
+        android:layout_marginBottom="396dp"
+        android:background="#00C65555"
+        android:elevation="2dp"
+        tools:srcCompat="@drawable/ic_imagenapi" />
+
+    <Button
+        android:id="@+id/btnChangeProfilePicture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/imageView"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="43dp"
+        android:background="@drawable/circle_button"
+        android:drawableStart="@drawable/ic_camara"
+        android:elevation="1dp"
+        android:onClick="changeProfilePicture"
+        android:padding="16dp"
+        android:textColor="@android:color/white" />
+
+    <TextView
+        android:id="@+id/tvBienvenidaUsuario"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:padding="16dp"
+        android:text="Hola, User"
+        android:textColor="@android:color/white"
+        android:textSize="30sp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:id="@+id/containerControls"
+        android:layout_width="match_parent"
+        android:layout_height="525dp"
+
+        android:layout_marginTop="175dp"
+        android:background="@drawable/redondeado"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingHorizontal="40dp"
+            android:paddingTop="100dp">
+
+            <TextView
+                android:id="@+id/textViewNombres"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nombres"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/editTextNombres"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:ems="10"
+                android:inputType="text"
+                android:shadowColor="#BCAAAA"
+                android:shadowDx="1"
+                android:shadowDy="1"
+                android:shadowRadius="1"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/textViewApellidos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Apellidos"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/editTextApellidos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:ems="10"
+                android:inputType="text"
+                android:shadowColor="#BCAAAA"
+                android:shadowDx="1"
+                android:shadowDy="1"
+                android:shadowRadius="1"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/textViewCorreo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Correo"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/editTextCorreo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:ems="10"
+                android:inputType="textEmailAddress"
+                android:shadowColor="#BCAAAA"
+                android:shadowDx="1"
+                android:shadowDy="1"
+                android:shadowRadius="1"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/textViewContrasena"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Contraseña"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/editTextContrasena"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:ems="10"
+                android:inputType="textPassword"
+                android:shadowColor="#BCAAAA"
+                android:shadowDx="1"
+                android:shadowDy="1"
+                android:shadowRadius="1"
+                android:textSize="14sp" />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="?android:attr/windowBackground"
+        app:itemIconTint="@android:color/white"
+        app:itemTextColor="@color/black"
+        app:menu="@menu/navegacion_menu" />
+
 </RelativeLayout>

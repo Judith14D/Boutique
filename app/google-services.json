@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "870382443561-q1ob50r9rt6j3702h3mc6hij9bdhg18v.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cibertec.boutique",
+            "certificate_hash": "a5f74382c564162eb1735dce64e28ca9d2f2c5e0"
+          }
+        },
+        {
           "client_id": "870382443561-ngd0qs2h3b7er7pstungujs8s9p11u3b.apps.googleusercontent.com",
           "client_type": 3
         }

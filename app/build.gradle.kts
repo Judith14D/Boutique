@@ -46,14 +46,18 @@ dependencies {
     implementation(libs.firebase.auth.ktx)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
+    implementation(libs.firebase.storage.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
     implementation(platform("com.google.firebase:firebase-bom:31.5.0"))
     implementation ("com.google.android.gms:play-services-auth:20.5.0")
+    implementation ("com.google.firebase:firebase-storage-ktx")
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.picasso:picasso:2.71828")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.0")
+    implementation("com.github.bumptech.glide:glide:4.12.0")
+
 }

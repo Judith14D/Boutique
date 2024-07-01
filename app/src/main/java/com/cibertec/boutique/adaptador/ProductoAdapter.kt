@@ -20,6 +20,9 @@ class ProductoAdapter(private var productList: List<Producto>) : RecyclerView.Ad
     inner class ProductViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val imageViewProducto: ImageView = itemView.findViewById(R.id.imageViewProducto)
         private val imageViewCorazon: ImageView = itemView.findViewById(R.id.imageViewFavorite)
+        private val tvMarcaProducto: TextView = itemView.findViewById(R.id.tvMarcaProducto)
+        private val tvNombreProducto: TextView = itemView.findViewById(R.id.tvNombreProducto)
+        private val tvPrecio: TextView = itemView.findViewById(R.id.tvPrecio)
         private var isFavorito: Boolean = false
 
         init {
@@ -59,8 +62,11 @@ class ProductoAdapter(private var productList: List<Producto>) : RecyclerView.Ad
     override fun onBindViewHolder(holder: ProductViewHolder, position: Int) {
         if (filteredList.isNotEmpty()) {
             val product = filteredList[position]
-            holder.itemView.findViewById<TextView>(R.id.tvNombreProducto).text = product.name
-            holder.itemView.findViewById<TextView>(R.id.tvDescripcion).text = product.description
+
+            holder.itemView.findViewById<TextView>(R.id.tvMarcaProducto).text = product.brand ?: "Marca no disponible"
+            holder.itemView.findViewById<TextView>(R.id.tvNombreProducto).text  = product.name
+            holder.itemView.findViewById<TextView>(R.id.tvPrecio).text  = "S/ ${product.price ?: "No disponible"}"
+
             val imageViewProducto = holder.itemView.findViewById<ImageView>(R.id.imageViewProducto)
             try {
                 Picasso.get().load(product.image_link).into(imageViewProducto)
@@ -70,8 +76,9 @@ class ProductoAdapter(private var productList: List<Producto>) : RecyclerView.Ad
 
         } else {
             // Manejar caso donde la lista está vacía, por ejemplo:
+            holder.itemView.findViewById<TextView>(R.id.tvMarcaProducto).text  = "Marca no disponible"
             holder.itemView.findViewById<TextView>(R.id.tvNombreProducto).text = "No hay productos"
-            holder.itemView.findViewById<TextView>(R.id.tvDescripcion).text = ""
+            holder.itemView.findViewById<TextView>(R.id.tvPrecio).text  = ""
         }
     }
 
@@ -90,7 +97,7 @@ class ProductoAdapter(private var productList: List<Producto>) : RecyclerView.Ad
 
     fun updateProducts(newProducts: List<Producto>) {
         productList = newProducts
-        filteredList = newProducts // Asegúrate de actualizar también la lista filtrada si es necesario
+        filteredList = newProducts
         notifyDataSetChanged()
     }
 }

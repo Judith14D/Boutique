@@ -14,36 +14,35 @@ class DetalleProductoActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detalle_producto)
 
-        // Obtener referencias a las vistas
         val imageViewProducto: ImageView = findViewById(R.id.imageProducto)
-        // Obtener la URL de la imagen del Intent
-        val imagenUrl = intent.getStringExtra("imagen")
-
-        // Cargar la imagen usando Picasso
-        Picasso.get().load(imagenUrl).into(imageViewProducto)
-
         val editTextNombre: EditText = findViewById(R.id.editTextNombre)
         val editTextDescripcion: EditText = findViewById(R.id.editTextDescripcion)
         val editTextCategoria: EditText = findViewById(R.id.editTextCategoria)
         val editTextPrecio: EditText = findViewById(R.id.editTextPrecio)
         val btnVolver: Button = findViewById(R.id.btnVolver)
 
-        // Obtener los datos del producto del Intent
+        editTextNombre.isEnabled = false
+        editTextDescripcion.isEnabled = false
+        editTextCategoria.isEnabled = false
+        editTextPrecio.isEnabled = false
+
+        val imagenUrl = intent.getStringExtra("imagen")
+        Picasso.get().load(imagenUrl).into(imageViewProducto)
+
         val nombre = intent.getStringExtra("nombre")
         val descripcion = intent.getStringExtra("descripcion")
         val categoria = intent.getStringExtra("categoria")
-        val precio = intent.getDoubleExtra("precio", 0.0) // Cambiado a getDoubleExtra
+        val precio = intent.getDoubleExtra("precio", 0.0)
 
-        // Actualizar las vistas con los datos del producto
         editTextNombre.setText(nombre)
         editTextDescripcion.setText(descripcion)
         editTextCategoria.setText(categoria)
-        editTextPrecio.setText(precio.toString()) // Convertir precio a String
+        editTextPrecio.setText(precio.toString())
 
-        // Configurar el botón "Volver"
         btnVolver.setOnClickListener {
-            finish() // Cerrar la actividad actual y volver a la actividad anterior
+            finish()
         }
+
         val bottomNavigationView: BottomNavigationView = findViewById(R.id.bottomNavigationView)
         bottomNavigationView.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
