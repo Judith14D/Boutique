@@ -1,7 +1,9 @@
 package com.cibertec.boutique
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.media.Image
 import android.net.Uri
 import android.os.Bundle
@@ -24,6 +26,7 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
 import com.google.firebase.auth.userProfileChangeRequest
+import com.google.firebase.crashlytics.buildtools.reloc.org.apache.commons.io.output.ByteArrayOutputStream
 import com.google.firebase.storage.FirebaseStorage
 import java.util.UUID
 
@@ -64,7 +67,7 @@ class PerfilActivity : AppCompatActivity() {
         val textViewUser = findViewById<TextView>(R.id.tvBienvenidaUsuario)
         val btnChangeImage = findViewById<ImageView>(R.id.btnChangeProfilePicture)
 
-
+        //Firebase
         val auth = Firebase.auth
         val user = auth.currentUser
 
@@ -90,14 +93,15 @@ class PerfilActivity : AppCompatActivity() {
             // Handle the case where the user is not signed in
         }
 
+        //Lanza el popup de las opciones
         btnChangeImage.setOnClickListener {
             showPopupMenu(it)
         }
 
-        /*val sign_out_button = findViewById<Button>(R.id.logout_button)
+        val sign_out_button = findViewById<Button>(R.id.btnCerrarSesion)
         sign_out_button.setOnClickListener {
             signOutAndStartSignInActivity()
-        }*/
+        }
 
     } //FIN ONCREATE
 
@@ -132,11 +136,29 @@ class PerfilActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.data != null) {
-            // uri = utilizado para archivos de imagem, manejo de rutas de imagen
-            val uri = data.data
-            uploadImageToFirebase(uri)
+        if (requestCode == IMAGE_REQUEST && resultCode == Activity.RESULT_OK) {
+            // uri = utilizado para archivos de imagem, manejo de rutas de imagen de galería
+            val uri = data?.data
+
+            //valida si la imagen fue tomada desde la galería o por camara
+            if (uri != null) {
+                uploadImageToFirebase(uri)
+            } else {
+                val bitmap = data?.extras?.get("data") as? Bitmap
+                bitmap?.let {
+                    val tempUri = bitmapToUri(this,bitmap)
+                    uploadImageToFirebase(tempUri)
+                }
+            }
         }
+    }
+
+    //Convierte el bitmap a Uri para poder subirlo a firebase
+    private fun bitmapToUri(context: Context, bitmap: Bitmap): Uri {
+        val stream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
+        val path = MediaStore.Images.Media.insertImage(context.contentResolver, bitmap, "Perfil", null)
+        return Uri.parse(path)
     }
 
     //ACTUALIZAR IMAGEN DE FIREBASE
@@ -173,5 +195,18 @@ class PerfilActivity : AppCompatActivity() {
                         .into(imageView)
                 }
             }
+    }
+
+
+    //CERRAR SESION
+    private fun signOutAndStartSignInActivity() {
+        mAuth.signOut()
+
+        mGoogleSignInClient.signOut().addOnCompleteListener(this) {
+            // Optional: Update UI or show a message to the user
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
     }
 }

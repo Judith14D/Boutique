@@ -10,22 +10,21 @@
         android:id="@+id/imageView"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:layout_above="@id/bottomNavigationView"
         android:layout_below="@+id/tvBienvenidaUsuario"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="31dp"
         android:layout_marginBottom="396dp"
         android:background="#00C65555"
         android:elevation="2dp"
-        android:scaleType="centerCrop"
         tools:srcCompat="@drawable/ic_imagenapi" />
 
     <ImageView
         android:id="@+id/btnChangeProfilePicture"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_above="@id/bottomNavigationView"
+        android:layout_below="@+id/tvBienvenidaUsuario"
         android:layout_marginLeft="240dp"
+        android:layout_marginTop="150dp"
         android:padding="8dp"
         android:layout_marginBottom="386dp"
         android:background="@drawable/circle_button"
@@ -47,7 +46,7 @@
     <LinearLayout
         android:id="@+id/containerControls"
         android:layout_width="match_parent"
-        android:layout_height="525dp"
+        android:layout_height="match_parent"
 
         android:layout_marginTop="175dp"
         android:background="@drawable/redondeado"
@@ -145,6 +144,12 @@
                 android:shadowRadius="1"
                 android:textSize="14sp"
                 android:enabled="false" />
+
+            <Button
+                android:id="@+id/btnCerrarSesion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Cerrar sesión" />
 
 
         </LinearLayout>
