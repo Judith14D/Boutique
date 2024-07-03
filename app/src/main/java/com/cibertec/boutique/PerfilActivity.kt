@@ -3,6 +3,7 @@ package com.cibertec.boutique
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.media.Image
 import android.net.Uri
@@ -16,6 +17,8 @@ import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.bumptech.glide.Glide
@@ -43,12 +46,14 @@ class PerfilActivity : AppCompatActivity() {
 
     companion object {
         private const val IMAGE_REQUEST = 1
+        private const val REQUEST_CODE_STORAGE_PERMISSION = 1
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_perfil)
+        checkAndRequestPermissions()
 
         mAuth = FirebaseAuth.getInstance()
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -153,7 +158,7 @@ class PerfilActivity : AppCompatActivity() {
         }
     }
 
-    //Convierte el bitmap a Uri para poder subirlo a firebase
+    //Convierte el bitmap a Uri para poder subirlo a firebase - TOMADO DESDE CAMARA
     private fun bitmapToUri(context: Context, bitmap: Bitmap): Uri {
         val stream = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
@@ -164,8 +169,8 @@ class PerfilActivity : AppCompatActivity() {
     //ACTUALIZAR IMAGEN DE FIREBASE
     private fun uploadImageToFirebase(uri: Uri?) {
         if (uri != null) {
-            val storageReference = FirebaseStorage.getInstance().reference
-            val ref = storageReference.child("profile_images/" + UUID.randomUUID().toString())
+            val storage = FirebaseStorage.getInstance().reference
+            val ref = storage.child("profile_images/" + UUID.randomUUID().toString())
             ref.putFile(uri)
                 .addOnSuccessListener {
                     ref.downloadUrl.addOnSuccessListener { downloadUri ->
@@ -207,6 +212,46 @@ class PerfilActivity : AppCompatActivity() {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
             finish()
+        }
+    }
+
+
+    //  PERMISOS
+
+    private fun checkAndRequestPermissions() {
+        val permissions = arrayOf(
+            android.Manifest.permission.READ_EXTERNAL_STORAGE,
+            android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+        )
+
+        val permissionsToRequest = mutableListOf<String>()
+
+        for (permission in permissions) {
+            //El conetextCompat verifica que el permiso haya sido agregado
+            //si no, lo solicita con el permissionsToRequest
+            if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+                permissionsToRequest.add(permission)
+            }
+        }
+
+        //El permissionsToRquest verifica que haya permisos por solicitar
+        if (permissionsToRequest.isNotEmpty()) {
+            ActivityCompat.requestPermissions(this, permissionsToRequest.toTypedArray(), REQUEST_CODE_STORAGE_PERMISSION)
+        } else {
+            // AQUI VIENE LA LOGICA PARA CARGAR LOS QUE DESEAMOS DE LOS PERMISOS CONCEDIDOS
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            REQUEST_CODE_STORAGE_PERMISSION -> {
+                if (grantResults.isNotEmpty() && grantResults.all { it == PackageManager.PERMISSION_GRANTED }) {
+                    //Verifica nuevamente que todos los permisos hayan sido otogados
+                } else {
+                    println("No se puede acceder a la escritura de imagenes")
+                }
+            }
         }
     }
 }
