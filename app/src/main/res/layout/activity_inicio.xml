@@ -142,7 +142,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
     <Button
-        android:id="@+id/btnRegistrar"
+        android:id="@+id/btnIniciarSesion"
         android:layout_width="241dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="49dp"
@@ -168,6 +168,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnRegistrar" />
+        app:layout_constraintTop_toBottomOf="@+id/btnIniciarSesion" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

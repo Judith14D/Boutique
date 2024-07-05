@@ -5,16 +5,21 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.drawable.BitmapDrawable
 import android.media.Image
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Base64
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.PopupMenu
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -22,15 +27,20 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.bumptech.glide.Glide
+import com.cibertec.boutique.clase.Usuario
+import com.cibertec.boutique.db.DBHelper
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
 import com.google.firebase.auth.userProfileChangeRequest
 import com.google.firebase.crashlytics.buildtools.reloc.org.apache.commons.io.output.ByteArrayOutputStream
 import com.google.firebase.storage.FirebaseStorage
+import org.w3c.dom.Text
+import java.util.Date
 import java.util.UUID
 
 class PerfilActivity : AppCompatActivity() {
@@ -42,7 +52,17 @@ class PerfilActivity : AppCompatActivity() {
     private lateinit var editTextNombres: EditText
     private lateinit var editTextApellidos:EditText
     private lateinit var editTextContrasena: EditText
+    private lateinit var textViewUser : TextView
 
+    private lateinit var btnChangeImage: Button
+    private lateinit var btnSignOut: Button
+    private lateinit var btnEditar: Button
+    private lateinit var btnGuardar: Button
+    private lateinit var btnMapa: Button
+
+    private lateinit var dbHelper: DBHelper
+    private var usuarioId: Int =0
+    private var isFirstTimeProfile: Boolean = true
 
     companion object {
         private const val IMAGE_REQUEST = 1
@@ -69,8 +89,30 @@ class PerfilActivity : AppCompatActivity() {
         editTextApellidos = findViewById(R.id.editTextApellidos)
         editTextContrasena = findViewById(R.id.editTextContrasena)
         editTextCorreo = findViewById(R.id.editTextCorreo)
-        val textViewUser = findViewById<TextView>(R.id.tvBienvenidaUsuario)
-        val btnChangeImage = findViewById<ImageView>(R.id.btnChangeProfilePicture)
+        textViewUser = findViewById(R.id.tvBienvenidaUsuario)
+
+        btnChangeImage = findViewById(R.id.btnCambiarImagen)
+        btnSignOut = findViewById(R.id.btnCerrarSesion)
+        btnEditar = findViewById(R.id.btnEditar)
+        btnGuardar = findViewById(R.id.btnGuardar)
+        btnMapa = findViewById(R.id.btnMapa)
+
+        //Obtener los datos de la otra vista
+        val id = intent.getIntExtra("id", 0)
+        val nombre = intent.getStringExtra("nombre") ?: ""
+        val apellido = intent.getStringExtra("apellido") ?: ""
+        val correo = intent.getStringExtra("correo") ?: ""
+        val contrasena = intent.getStringExtra("contrasena") ?: ""
+        val imagenBase64 = intent.getStringExtra("imagen") ?: ""
+        val edad = intent.getIntExtra("edad", 0)
+        val fechaNac = intent.getSerializableExtra("fechaNac") as? Date ?: Date()
+        val sexo = intent.getStringExtra("sexo") ?: ""
+        // Convertir la imagen de Base64 a ByteArray
+        val imagen = if (imagenBase64.isNotEmpty()) {
+            Base64.decode(imagenBase64, Base64.DEFAULT)
+        } else {
+            null
+        }
 
         //Firebase
         val auth = Firebase.auth
@@ -95,7 +137,35 @@ class PerfilActivity : AppCompatActivity() {
                 .load(userPhoto)
                 .into(imageView)
         } else {
-            // Handle the case where the user is not signed in
+            val usuario = Usuario(
+                id = id,
+                nombre = nombre,
+                apellido = apellido,
+                correo = correo,
+                contrasena = contrasena,
+                edad = edad,
+                sexo = sexo,
+                fechaNac = fechaNac,
+                imagen = imagen
+            )
+            // Guardar datos del usuario
+            guardarDatosUsuarioEnSharedPreferences(usuario)
+            // Obtener el ID del usuario desde SharedPreferences
+            usuarioId = obtenerIdDeUsuario()
+            Log.d("PerfilActivity", "ID de usuario inicial: $usuarioId")
+            textViewUser.text = "Hola, $nombre"
+            editTextNombres.setText(nombre)
+            editTextApellidos.setText(apellido)
+            editTextCorreo.setText(correo)
+            editTextContrasena.setText(contrasena)
+
+            cargarImagenPerfil()
+            cargarDatosUsuario()
+
+            dbHelper = DBHelper(this)
+            guardarCambios()
+            usuarioId = obtenerIdDeUsuario()
+            Log.d("PerfilActivity", "ID de usuario inicial: $usuarioId")
         }
 
         //Lanza el popup de las opciones
@@ -103,10 +173,51 @@ class PerfilActivity : AppCompatActivity() {
             showPopupMenu(it)
         }
 
-        val sign_out_button = findViewById<Button>(R.id.btnCerrarSesion)
-        sign_out_button.setOnClickListener {
-            signOutAndStartSignInActivity()
+        btnSignOut.setOnClickListener {
+            if(user != null){
+                signOutAndStartSignInActivity()
+            }else{
+                cerrarSesionYRedirigirAMainActivity()
+            }
         }
+
+
+        btnEditar.setOnClickListener {
+            habilitarEdicion(true)
+        }
+
+        btnGuardar.setOnClickListener {
+            guardarCambios()
+        }
+
+        btnMapa.setOnClickListener {
+            val intent = Intent(this, MapaActivity::class.java)
+            startActivity(intent)
+        }
+
+        //NAVEGACION
+        val bottomNavigationView: BottomNavigationView = findViewById(R.id.bottomNavigationView)
+        bottomNavigationView.setOnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.navigation_inicio -> {
+                    val intent = Intent(this, UsuarioActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
+                R.id.navigation_contacto -> {
+                    val intent = Intent(this, ContactoActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
+                R.id.navigation_perfil -> {
+                    val intent = Intent(this, PerfilActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
+                else -> false
+            }
+        }
+
 
     } //FIN ONCREATE
 
@@ -139,6 +250,22 @@ class PerfilActivity : AppCompatActivity() {
         popupMenu.show()
     }
 
+    //EDITAR DATOS DE USUARIO ---------------------------------------------------------
+
+    //IMAGEN  ********************
+    private fun cargarImagenPerfil() {
+        val imagenByteArray = intent.getByteArrayExtra("imagen")
+
+        if (imagenByteArray != null) {
+            val bitmap = BitmapFactory.decodeByteArray(imagenByteArray, 0, imagenByteArray.size)
+            imageView.setImageBitmap(bitmap)
+            isFirstTimeProfile = false
+        } else {
+            val defaultImage = BitmapFactory.decodeResource(resources, R.drawable.default_profile_image)
+            imageView.setImageBitmap(defaultImage)
+        }
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == IMAGE_REQUEST && resultCode == Activity.RESULT_OK) {
@@ -146,14 +273,32 @@ class PerfilActivity : AppCompatActivity() {
             val uri = data?.data
 
             //valida si la imagen fue tomada desde la galería o por camara
-            if (uri != null) {
+            if (uri != null && Firebase.auth.currentUser != null) {  //galería y firebase
                 uploadImageToFirebase(uri)
-            } else {
+            }else if(uri != null && obtenerIdDeUsuario() != -1) {
+                try {
+                    val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, uri)
+                    imageView.setImageBitmap(bitmap)
+                    val byteArrayOutputStream = ByteArrayOutputStream()
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)
+                    val byteArray = byteArrayOutputStream.toByteArray()
+                    intent.putExtra("imagen", byteArray)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            } else if (uri == null && Firebase.auth.currentUser != null){
                 val bitmap = data?.extras?.get("data") as? Bitmap
                 bitmap?.let {
                     val tempUri = bitmapToUri(this,bitmap)
                     uploadImageToFirebase(tempUri)
                 }
+            }else{
+                val imageBitmap = data?.extras?.get("data") as? Bitmap
+                imageView.setImageBitmap(imageBitmap)
+                val byteArrayOutputStream = ByteArrayOutputStream()
+                imageBitmap?.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)
+                val byteArray = byteArrayOutputStream.toByteArray()
+                intent.putExtra("imagen", byteArray)
             }
         }
     }
@@ -202,8 +347,140 @@ class PerfilActivity : AppCompatActivity() {
             }
     }
 
+    //DATOS ********************
 
-    //CERRAR SESION
+    private fun guardarDatosUsuarioEnSharedPreferences(usuario: Usuario) {
+        val preferences = getSharedPreferences("user_session", Context.MODE_PRIVATE)
+        val editor = preferences.edit()
+        editor.putInt("id", usuario.id)
+        editor.putString("nombre", usuario.nombre)
+        editor.putString("apellido", usuario.apellido)
+        editor.putString("correo", usuario.correo)
+        editor.putString("contrasena", usuario.contrasena)
+        if (usuario.imagen != null) {
+            editor.putString("imagen", Base64.encodeToString(usuario.imagen, Base64.DEFAULT))
+        }
+        editor.apply()
+
+        Log.d("SharedPreferences", "Datos guardados en SharedPreferences:")
+        Log.d("SharedPreferences", "ID: ${usuario.id}")
+        Log.d("SharedPreferences", "Nombre: ${usuario.nombre}")
+        Log.d("SharedPreferences", "Apellido: ${usuario.apellido}")
+        Log.d("SharedPreferences", "Correo: ${usuario.correo}")
+        Log.d("SharedPreferences", "Contrasena: ${usuario.contrasena}")
+    }
+
+
+    private fun guardarCambios() {
+        val nombres = editTextNombres.text.toString().trim()
+        val apellidos = editTextApellidos.text.toString().trim()
+        val correo = editTextCorreo.text.toString().trim()
+        val contrasena = editTextContrasena.text.toString().trim()
+
+        if (nombres.isNotEmpty() && apellidos.isNotEmpty() && correo.isNotEmpty() && contrasena.isNotEmpty()) {
+            val usuarioExistente = dbHelper.obtenerPerfilPorId(usuarioId)
+            if (usuarioExistente != null) {
+                usuarioExistente.nombre = nombres
+                usuarioExistente.apellido = apellidos
+                usuarioExistente.correo = correo
+                usuarioExistente.contrasena = contrasena
+                usuarioExistente.imagen = obtenerImagenPerfil()
+
+                val success = dbHelper.actualizarPerfil(usuarioExistente)
+                if (success) {
+                    guardarDatosUsuarioEnSharedPreferences(usuarioExistente)
+
+                    Toast.makeText(this, "Cambios guardados correctamente", Toast.LENGTH_SHORT).show()
+                    cargarDatosUsuario()
+                    habilitarEdicion(false)
+                } else {
+                    Toast.makeText(this, "Error al guardar los cambios", Toast.LENGTH_SHORT).show()
+                }
+            } else {
+                Toast.makeText(this, "Error: Usuario no encontrado", Toast.LENGTH_SHORT).show()
+            }
+        } else {
+            Toast.makeText(this, "Completa todos los campos", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun obtenerImagenPerfil(): ByteArray? {
+        val drawable = imageView.drawable as? BitmapDrawable ?: return null
+        val bitmap = drawable.bitmap
+        val byteArrayOutputStream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)
+        return byteArrayOutputStream.toByteArray()
+    }
+
+    private fun habilitarEdicion(habilitar: Boolean) {
+        editTextNombres.isEnabled = habilitar
+        editTextApellidos.isEnabled = habilitar
+        editTextCorreo.isEnabled = habilitar
+        editTextContrasena.isEnabled = habilitar
+
+        if (habilitar) {
+            btnEditar.visibility = View.GONE
+            btnGuardar.visibility = View.VISIBLE
+        } else {
+            btnEditar.visibility = View.VISIBLE
+            btnGuardar.visibility = View.GONE
+        }
+    }
+    private fun cargarDatosUsuario() {
+        val preferences = getSharedPreferences("user_session", Context.MODE_PRIVATE)
+        val nombre = preferences.getString("nombre", "")
+        val apellido = preferences.getString("apellido", "")
+        val correo = preferences.getString("correo", "")
+        val contrasena = preferences.getString("contrasena", "")
+        val imagenBase64 = preferences.getString("imagen", "")
+        val usuarioId = preferences.getInt("id", 0)
+
+        if (usuarioId == 0) {
+            Toast.makeText(this, "Error: Usuario no encontrado", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        Log.d("SharedPreferences", "Datos recuperados de SharedPreferences:")
+        Log.d("SharedPreferences", "ID: $usuarioId")
+        Log.d("SharedPreferences", "Nombre: $nombre")
+        Log.d("SharedPreferences", "Apellido: $apellido")
+        Log.d("SharedPreferences", "Correo: $correo")
+        Log.d("SharedPreferences", "Contrasena: $contrasena")
+        Log.d("SharedPreferences", "Imagen: $imagenBase64")
+
+
+        textViewUser.text = "Hola, $nombre"
+        editTextNombres.setText(nombre)
+        editTextApellidos.setText(apellido)
+        editTextCorreo.setText(correo)
+        editTextContrasena.setText(contrasena)
+
+        if (!imagenBase64.isNullOrEmpty()) {
+            val imageBytes = Base64.decode(imagenBase64, Base64.DEFAULT)
+            val bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
+            imageView.setImageBitmap(bitmap)
+        } else {
+            imageView.setImageResource(R.drawable.default_profile_image)
+        }
+    }
+
+    private fun obtenerIdDeUsuario(): Int {
+        val preferences = getSharedPreferences("user_session", Context.MODE_PRIVATE)
+        val id = preferences.getInt("id", -1)
+        if (id == -1) {
+            Toast.makeText(this, "ID de usuario no encontrado en SharedPreferences", Toast.LENGTH_SHORT).show()
+            Log.d("PerfilActivity", "ID de usuario no encontrado en SharedPreferences")
+        } else {
+            Log.d("PerfilActivity", "ID de usuario obtenido de SharedPreferences: $id")
+        }
+        return id
+    }
+
+
+
+    //CERRAR SESION ------------------------------------------
+
+    //Firebase
     private fun signOutAndStartSignInActivity() {
         mAuth.signOut()
 
@@ -215,8 +492,28 @@ class PerfilActivity : AppCompatActivity() {
         }
     }
 
+    //Con bd
+    private fun cerrarSesionYRedirigirAMainActivity() {
+        val preferences = getSharedPreferences("user_session", Context.MODE_PRIVATE)
+        val editor = preferences.edit()
+        editor.clear()
+        editor.apply()
 
-    //  PERMISOS
+        val intent = Intent(this, MainActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+
+        finish()
+    }
+
+    /*
+    override fun onResume() {
+        super.onResume()
+        cargarImagenPerfil()
+    }*/
+
+
+    //  PERMISOS ---------------------------------------------
 
     private fun checkAndRequestPermissions() {
         val permissions = arrayOf(

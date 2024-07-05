@@ -58,7 +58,7 @@
         android:layout_marginStart="144dp"
         android:layout_marginEnd="60dp"
         android:layout_marginBottom="60dp"
-        app:layout_constraintBottom_toTopOf="@+id/btnRegistrar"
+        app:layout_constraintBottom_toTopOf="@+id/btnIniciarSesion"
         app:layout_constraintEnd_toStartOf="@+id/icGooglee"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3"
@@ -71,7 +71,7 @@
         android:layout_marginTop="65dp"
         android:layout_marginEnd="137dp"
         android:layout_marginBottom="59dp"
-        app:layout_constraintBottom_toTopOf="@+id/btnRegistrar"
+        app:layout_constraintBottom_toTopOf="@+id/btnIniciarSesion"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/icFacebook"
         app:layout_constraintTop_toTopOf="@+id/textView3"
@@ -94,7 +94,7 @@
         app:layout_constraintTop_toBottomOf="@+id/icBanner" />
 
     <Button
-        android:id="@+id/btnRegistrar"
+        android:id="@+id/btnIniciarSesion"
         android:layout_width="241dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="49dp"
@@ -118,5 +118,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnRegistrar" />
+        app:layout_constraintTop_toBottomOf="@+id/btnIniciarSesion" />
 </androidx.constraintlayout.widget.ConstraintLayout>

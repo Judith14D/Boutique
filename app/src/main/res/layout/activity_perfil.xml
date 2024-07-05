@@ -4,31 +4,28 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="#FBDCC4">
+    android:background="#D4BCE6">
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_below="@+id/tvBienvenidaUsuario"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="31dp"
-        android:layout_marginBottom="396dp"
+        android:layout_width="228dp"
+        android:layout_height="307dp"
+        android:layout_above="@id/bottomNavigationView"
+        android:layout_marginLeft="95dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginBottom="427dp"
         android:background="#00C65555"
-        android:elevation="2dp"
-        tools:srcCompat="@drawable/ic_imagenapi" />
+        android:elevation="10dp"
+        android:scaleType="centerCrop" />
 
     <ImageView
         android:id="@+id/btnChangeProfilePicture"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_below="@+id/tvBienvenidaUsuario"
+        android:layout_above="@id/bottomNavigationView"
         android:layout_marginLeft="240dp"
-        android:layout_marginTop="150dp"
         android:padding="8dp"
         android:layout_marginBottom="386dp"
-        android:background="@drawable/circle_button"
-        tools:srcCompat="@drawable/ic_camera"
         android:elevation="8dp"
         android:translationZ="8dp" />
 
@@ -43,23 +40,40 @@
         android:textSize="30sp"
         android:textStyle="bold" />
 
+    <Button
+        android:id="@+id/btnCambiarImagen"
+        android:layout_width="35dp"
+        android:layout_height="42dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="105dp"
+        android:layout_marginLeft="255dp"
+        android:layout_marginBottom="9dp"
+        android:paddingStart="0dp"
+        android:paddingTop="0dp"
+        android:paddingEnd="1dp"
+        android:paddingBottom="1dp"
+        app:backgroundTint="@color/black"
+        android:elevation="16dp"
+        android:text="+"
+        android:textSize="24sp" />
+
     <LinearLayout
         android:id="@+id/containerControls"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-
-        android:layout_marginTop="175dp"
+        android:layout_height="665dp"
+        android:layout_marginTop="230dp"
         android:background="@drawable/redondeado"
         android:orientation="vertical"
         android:padding="16dp">
 
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="381dp"
+            android:layout_height="480dp"
+            android:layout_marginTop="96dp"
             android:orientation="vertical"
-            android:paddingHorizontal="40dp"
-            android:paddingTop="100dp">
+            android:paddingHorizontal="40dp">
+
 
             <TextView
                 android:id="@+id/textViewNombres"
@@ -74,13 +88,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:ems="10"
+                android:enabled="false"
                 android:inputType="text"
                 android:shadowColor="#BCAAAA"
                 android:shadowDx="1"
                 android:shadowDy="1"
                 android:shadowRadius="1"
-                android:textSize="14sp"
-                android:enabled="false" />
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/textViewApellidos"
@@ -95,13 +109,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:ems="10"
+                android:enabled="false"
                 android:inputType="text"
                 android:shadowColor="#BCAAAA"
                 android:shadowDx="1"
                 android:shadowDy="1"
                 android:shadowRadius="1"
-                android:textSize="14sp"
-                android:enabled="false" />
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/textViewCorreo"
@@ -116,13 +130,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:ems="10"
+                android:enabled="false"
                 android:inputType="textEmailAddress"
                 android:shadowColor="#BCAAAA"
                 android:shadowDx="1"
                 android:shadowDy="1"
                 android:shadowRadius="1"
-                android:textSize="14sp"
-                android:enabled="false" />
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/textViewContrasena"
@@ -137,20 +151,50 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:ems="10"
+                android:enabled="false"
                 android:inputType="textPassword"
                 android:shadowColor="#BCAAAA"
                 android:shadowDx="1"
                 android:shadowDy="1"
                 android:shadowRadius="1"
-                android:textSize="14sp"
-                android:enabled="false" />
+                android:textSize="14sp" />
+
+            <Button
+                android:id="@+id/btnEditar"
+                android:layout_width="117dp"
+                android:layout_height="35dp"
+                android:layout_marginStart="100dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="32dp"
+                android:shadowColor="@color/white"
+                android:background="@drawable/button_styles"
+                android:paddingTop="0dp"
+                android:paddingBottom="0dp"
+                android:text="Editar"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white" />
+
+            <Button
+                android:id="@+id/btnGuardar"
+                android:layout_width="117dp"
+                android:layout_height="35dp"
+                android:layout_marginStart="100dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="32dp"
+                android:background="@drawable/button_styles"
+                android:paddingTop="0dp"
+                android:paddingBottom="0dp"
+                android:shadowColor="@color/white"
+                android:text="Guardar"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:visibility="gone" />
 
             <Button
                 android:id="@+id/btnCerrarSesion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Cerrar sesión" />
-
 
         </LinearLayout>
 
@@ -165,5 +209,21 @@
         app:itemIconTint="@android:color/white"
         app:itemTextColor="@color/black"
         app:menu="@menu/navegacion_menu" />
+
+    <Button
+        android:id="@+id/btnMapa"
+        android:layout_width="68dp"
+        android:paddingTop="0dp"
+        android:paddingBottom="0dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="330dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/button_styles"
+
+        android:textColor="@android:color/white"
+
+        android:text="Ver Mapa" />
 
 </RelativeLayout>

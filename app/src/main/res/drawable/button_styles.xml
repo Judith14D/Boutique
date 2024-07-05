@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Estado presionado -->
+    <item android:drawable="@drawable/btn_editar_pressed" android:state_pressed="true" />
+    <!-- Estado enfocado -->
+    <item android:drawable="@drawable/btn_editar_focused" android:state_focused="true" />
+    <!-- Estado predeterminado -->
+    <item android:drawable="@drawable/btn_editar_default" />
+
+    <item android:drawable="@drawable/btn_guardar_pressed" android:state_pressed="true" />
+    <!-- Estado enfocado -->
+    <item android:drawable="@drawable/btn_guardar_focused" android:state_focused="true" />
+    <!-- Estado predeterminado -->
+    <item android:drawable="@drawable/btn_guardar_default" />
+</selector>

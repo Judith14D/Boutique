@@ -8,7 +8,7 @@
     <TextView
         android:id="@+id/tvTitulo"
         android:padding="16dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="19dp"
         android:text="Detalles del Producto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -30,14 +30,15 @@
             android:layout_height="wrap_content"
             android:background="@drawable/redondeado"
             android:orientation="vertical"
-            android:padding="75dp">
+            android:layout_marginTop="25dp"
+            android:padding="120dp">
 
             <ImageView
                 android:id="@+id/imageProducto"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:layout_gravity="center"
-                android:layout_marginTop="9dp"
+                android:layout_marginTop="-40dp"
                 android:scaleType="centerCrop" />
 
             <TextView
@@ -102,7 +103,7 @@
                 android:layout_width="78dp"
                 android:layout_height="27dp"
                 android:layout_gravity="center"
-                android:layout_marginTop="100dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginBottom="9dp"
                 android:background="@color/azul"
                 android:paddingStart="8dp"

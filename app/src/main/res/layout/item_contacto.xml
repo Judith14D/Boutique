@@ -6,9 +6,9 @@
     android:padding="12dp">
 
     <ImageView
-        android:id="@+id/imageViewProducto"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:id="@+id/imageViewUsuario"
+        android:layout_width="106dp"
+        android:layout_height="91dp"
         android:scaleType="centerCrop" />
 
     <LinearLayout
@@ -16,23 +16,17 @@
         android:layout_weight="1"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="15dp"
         android:orientation="vertical">
-        <TextView
-            android:id="@+id/tvMarcaProducto"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            android:text="Marca del Producto"/>
+
 
         <TextView
-            android:id="@+id/tvNombreProducto"
+            android:id="@+id/tvNombreUsuario"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="20sp"
             android:textStyle="bold"
-
-            android:text="Nombre del Producto"/>
+            android:text="Nombre del Usuario"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -43,22 +37,14 @@
                 android:id="@+id/tvSoles"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="Precio: " />
+                android:text="Edad: " />
 
-            <TextView
-                android:id="@+id/tvPrecio"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Descripción del Producto" />
+
         </LinearLayout>
 
     </LinearLayout>
 
-    <ImageView
-        android:id="@+id/imageViewFavorite"
-        android:layout_width="30dp"
-        android:layout_height="60dp"
-        android:layout_gravity="center_vertical"
-        android:src="@drawable/corazon_normal" />
+
 
 </LinearLayout>
+

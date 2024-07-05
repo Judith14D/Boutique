@@ -27,13 +27,11 @@ class UsuarioActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_usuario)
 
-        // Configurar el RecyclerView
         recyclerViewProducts = findViewById(R.id.recyclerViewProducts)
         recyclerViewProducts.layoutManager = LinearLayoutManager(this)
         productoAdapter = ProductoAdapter(productList)
         recyclerViewProducts.adapter = productoAdapter
 
-        // Configurar el SearchView
         val searchViewProducts: SearchView = findViewById(R.id.searchView)
         searchViewProducts.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -46,7 +44,6 @@ class UsuarioActivity : AppCompatActivity() {
             }
         })
 
-        // Configurar el Spinner de tipos de producto
         val spinnerProductType: Spinner = findViewById(R.id.spFiltros)
         val productTypes = arrayOf("Todo", "Bronzer", "Lip Liner", "Mascara", "Eyeliner", "blush", "foundation", "lipstick", "eyeshadow", "eyebrow") // Aquí deberías tener los tipos disponibles
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, productTypes)
@@ -64,16 +61,15 @@ class UsuarioActivity : AppCompatActivity() {
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
-                // Implementar según sea necesario
             }
         }
 
-        // Configurar BottomNavigationView
         val bottomNavigationView: BottomNavigationView = findViewById(R.id.bottomNavigationView)
         bottomNavigationView.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.navigation_inicio -> {
-                    // Ya estamos en esta actividad
+                    val intent = Intent(this, UsuarioActivity::class.java)
+                    startActivity(intent)
                     true
                 }
                 R.id.navigation_contacto -> {
@@ -89,8 +85,6 @@ class UsuarioActivity : AppCompatActivity() {
                 else -> false
             }
         }
-
-        // Cargar todos los productos al iniciar la actividad
         fetchAllProducts()
     }
 
@@ -100,7 +94,7 @@ class UsuarioActivity : AppCompatActivity() {
                 if (response.isSuccessful) {
                     val productListResponse = response.body()
                     productListResponse?.let {
-                        productList = it.drop(50) // Filtrar los primeros 50 elementos
+                        productList = it.drop(50)
                         updateAdapter(productList)
                     }
                 } else {
@@ -136,11 +130,9 @@ class UsuarioActivity : AppCompatActivity() {
     }
 
     private fun filterProducts(query: String) {
-        // Filtrar productos por nombre que contengan el texto de la búsqueda
         val filteredList = productList.filter {
             it.name.contains(query, ignoreCase = true)
         }
-        // Actualizar el adaptador con la lista filtrada
         updateAdapter(filteredList)
     }
 
