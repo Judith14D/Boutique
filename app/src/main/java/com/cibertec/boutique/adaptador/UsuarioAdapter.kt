@@ -7,7 +7,9 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.cibertec.boutique.R
+import com.cibertec.boutique.clase.CircleTransformation
 import com.cibertec.boutique.clase.Usuario
 
 class UsuarioAdapter(
@@ -42,7 +44,10 @@ class UsuarioAdapter(
             edadTextView.text = "Edad: ${usuario.edad}"
             usuario.imagen?.let {
                 val bitmap = BitmapFactory.decodeByteArray(it, 0, it.size)
-                imagenImageView.setImageBitmap(bitmap)
+                Glide.with(itemView.context)
+                    .load(bitmap)
+                    .transform(CircleTransformation())
+                    .into(imagenImageView)
             }
             itemView.setOnClickListener { onClick(usuario) }
         }

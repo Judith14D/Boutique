@@ -61,10 +61,10 @@
 
     <ImageView
         android:id="@+id/icFacebook"
-        android:layout_width="32dp"
-        android:layout_height="38dp"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
         android:layout_marginStart="129dp"
-        android:layout_marginTop="72dp"
+        android:layout_marginTop="75dp"
         android:layout_marginEnd="78dp"
         android:layout_marginBottom="67dp"
         app:layout_constraintBottom_toTopOf="@+id/tvIniciaSesion"
@@ -75,11 +75,11 @@
 
     <ImageView
         android:id="@+id/icGoogle"
-        android:layout_width="32dp"
-        android:layout_height="38dp"
-        android:layout_marginTop="72dp"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="55dp"
         android:layout_marginEnd="140dp"
-        android:layout_marginBottom="475dp"
+        android:layout_marginBottom="440dp"
         android:onClick="sendInicioGoogle"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

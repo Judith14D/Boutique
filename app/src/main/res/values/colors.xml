@@ -5,6 +5,7 @@
     <color name="fondo">#FBDCC4</color>
     <color name="azul">#0A0767</color>
     <color name="seleccionado">#FF4081</color>
+    <color name="lila">#D4BCE6</color>
+    <color name="lilafuerte">#AB6CDB</color>
     <color name="noseleccionado">#9E9E9E</color>
-    <color name="principal1">#747BFA</color>
 </resources>

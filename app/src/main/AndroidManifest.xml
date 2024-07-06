@@ -46,6 +46,9 @@
             android:name=".UsuarioActivity"
             android:exported="false" />
         <activity
+            android:name=".DetalleProductoActivity"
+            android:exported="false" />
+        <activity
             android:name=".InicioActivity"
             android:exported="false" />
         <activity

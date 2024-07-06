@@ -27,6 +27,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.bumptech.glide.Glide
+import com.cibertec.boutique.clase.CircleTransformation
 import com.cibertec.boutique.clase.Usuario
 import com.cibertec.boutique.db.DBHelper
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -135,6 +136,7 @@ class PerfilActivity : AppCompatActivity() {
             editTextApellidos.setText(lastName)
             Glide.with(this)
                 .load(userPhoto)
+                .transform(CircleTransformation())
                 .into(imageView)
         } else {
             val usuario = Usuario(
@@ -278,7 +280,10 @@ class PerfilActivity : AppCompatActivity() {
             }else if(uri != null && obtenerIdDeUsuario() != -1) {
                 try {
                     val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, uri)
-                    imageView.setImageBitmap(bitmap)
+                    Glide.with(this)
+                        .load(bitmap)
+                        .transform(CircleTransformation())
+                        .into(imageView)
                     val byteArrayOutputStream = ByteArrayOutputStream()
                     bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)
                     val byteArray = byteArrayOutputStream.toByteArray()
@@ -294,7 +299,10 @@ class PerfilActivity : AppCompatActivity() {
                 }
             }else{
                 val imageBitmap = data?.extras?.get("data") as? Bitmap
-                imageView.setImageBitmap(imageBitmap)
+                Glide.with(this)
+                    .load(imageBitmap)
+                    .transform(CircleTransformation())
+                    .into(imageView)
                 val byteArrayOutputStream = ByteArrayOutputStream()
                 imageBitmap?.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)
                 val byteArray = byteArrayOutputStream.toByteArray()
@@ -342,6 +350,7 @@ class PerfilActivity : AppCompatActivity() {
                     // Load the new profile image using Glide
                     Glide.with(this)
                         .load(downloadUri)
+                        .transform(CircleTransformation())
                         .into(imageView)
                 }
             }

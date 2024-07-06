@@ -30,12 +30,11 @@
         android:layout_height="45dp"
         android:layout_marginStart="26dp"
         android:layout_marginEnd="26dp"
-        android:layout_marginBottom="611dp"
         android:text="Por favor Inicia Sesión o Regístrate para  seguir usando nuestra app."
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/icBanner"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvBienvenido" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/icBanner"
